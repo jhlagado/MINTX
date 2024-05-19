@@ -68,6 +68,7 @@ vStkStart:  DS 2                ; s address of start of stack
             DS 2                ; y
 vLastDef:   DS 2                ; z name of last defined function
 
+vBasePtr:   DS 2
 vPointer:   DS 2                ; 
 vElse:      DS 2                ; 
 

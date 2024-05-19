@@ -13,6 +13,13 @@
     .org $4000
 
 testsStart:
+    ; test ":X1; X", 1
+
+    ; print "Done!"
+    ; HALT
+    
+
+
 
     test "1", 1
     test "0", 0

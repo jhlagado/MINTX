@@ -153,17 +153,6 @@ The `$` of "swap" operator exchanges the positions of the top two elements on th
 
 The code prints `50 40`
 
-### <a name='over'></a>Over
-
-The `%` of "over" operator copies the second element from the top of the stack and
-places it on top.
-
-```
-60 70 % . . .
-```
-
-The code prints `70 60 70`
-
 ## <a name='basic-arithmetic-operations'></a>Basic arithmetic operations
 
 ```
@@ -677,7 +666,6 @@ commands from the keyboard.
 | ------ | -------------------------------------------------------------------- | ------------ |
 | '      | drop the top member of the stack DROP                                | m n -- m     |
 | "      | duplicate the top member of the stack DUP                            | n -- n n     |
-| %      | over - take the 2nd member of the stack and copy to top of the stack | m n -- m n m |
 | $      | swap the top 2 members of the stack SWAP                             | m n -- n m   |
 | /D     | stack depth                                                          | -- n         |
 

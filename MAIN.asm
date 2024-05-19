@@ -260,6 +260,9 @@ NEXT:
 exit:
     inc bc			; store offests into a table of bytes, smaller
     ld de,bc                
+    ld ix,(vBasePtr)        ; 
+    call rpop               ; Restore old base pointer
+    ld (vBasePtr),hl
     call rpop               ; Restore Instruction pointer
     ld bc,hl
     EX de,hl
@@ -275,6 +278,7 @@ etx1:
 
 init:                           
     ld IX,RSTACK
+    ld (vBasePtr),IX
     ld IY,NEXT		; IY provides a faster jump to NEXT
 
     ld hl,vars              
@@ -450,6 +454,9 @@ writeChar:
 enter:                              
     ld hl,bc
     call rpush                      ; save Instruction Pointer
+    ld hl,(vBasePtr)
+    call rpush
+    ld (vBasePtr),ix
     pop bc
     dec bc
     jp (iy)                    
@@ -459,16 +466,6 @@ carry:
     rl l
     ld (vCarry),hl
     jp (iy)              
-
-setByteMode:
-    ld a,$FF
-    jr assignByteMode
-resetByteMode:
-    xor a
-assignByteMode:
-    ld (vByteMode),a
-    ld (vByteMode+1),a
-    jp (iy)
 
 false_:
     ld hl,FALSE
@@ -480,20 +477,30 @@ true1:
     push hl
     jp (iy)
 
+setByteMode:
+    ld a,$FF
+    jr assignByteMode
+resetByteMode:
+    xor a
+assignByteMode:
+    ld (vByteMode),a
+    jp (iy)
+
 ; **********************************************************************			 
 ; Page 4 primitive routines 
 ; **********************************************************************
     .align $100
 page4:
 
+bslash_:
+    jr setByteMode
+
 quote_:                          ; Discard the top member of the stack
     pop     hl
 at_:
 underscore_: 
+percent_:  
     jp (iy)
-
-bslash_:
-    jr setByteMode
 
 var_:
     ld a,(bc)
@@ -600,17 +607,12 @@ dquote_:
     push    hl
     jp (iy)
 
-    jp NEXT             ; hardwire white space to always go to NEXT (important for arrays)
-
-percent_:  
-    pop hl              ; Duplicate 2nd element of the stack
-    pop de
-    push de
-    push hl
-    push de              ; and push it to top of stack
-    jp (iy)        
+    jp NEXT                 ; hardwire white space to always go to NEXT (important for arrays)
 
 semi_:
+    ld ix,(vBasePtr)        ; 
+    call rpop               ; Restore old base pointer
+    ld (vBasePtr),hl
     call rpop               ; Restore Instruction pointer
     ld bc,hl                
     jp (iy)             
@@ -992,6 +994,9 @@ go1:
     cp ";"                      ; by jumping to rather than calling destination
     jr Z,go2
     call rpush                  ; save Instruction Pointer
+    ld hl,(vBasePtr)
+    call rpush
+    ld (vBasePtr),ix
 go2:
     ld bc,de
     dec bc
