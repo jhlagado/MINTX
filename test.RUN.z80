@@ -12,22 +12,25 @@ buf1%%M:
 buf2%%M:
 .endm
 
-LD SP,DSTACK
-CALL init
-ld HL,testGetCharImpl                       ; change getchar implmentation to use tbuf
-LD (GETCVEC),HL
-
-testInput "3."
-JP interpret
-
+    jp startTest
+    
 testGetCharImpl:
-        PUSH HL
-        LD HL,(tbPtr)
-        LD A,(HL)
-        INC HL
-        LD (tbPtr),HL
-        POP HL
-        RET                 ;NZ flagged if character input
+    PUSH HL
+    LD HL,(tbPtr)
+    LD A,(HL)
+    INC HL
+    LD (tbPtr),HL
+    POP HL
+    RET                 ;NZ flagged if character input
+
+startTest:
+    LD SP,DSTACK
+    CALL init
+    ld HL,testGetCharImpl                       ; change getchar implmentation to use tbuf
+    LD (GETCVEC),HL
+    
+    testInput "3."
+    JP interpret
 
 .include "MAIN.asm"
 .include "ram.asm"

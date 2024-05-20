@@ -30,12 +30,6 @@ GETCVEC:    DS 2                ;
 PUTCVEC:    DS 2                ;   
 
             .align $100
-opcodes:    
-            DS $80-32-1-1
-altCodes:
-            DS 26
-
-            .align $100
 
 vars:       DS VARS_SIZE
 defs:       DS VARS_SIZE
@@ -59,17 +53,16 @@ vTIBPtr:    DS 2                ; k address of text input buffer
             DS 2                ; p
             DS 2                ; q
 vRemain:    DS 2                ; r remainder of last division     
-vStkStart:  DS 2                ; s address of start of stack
+            DS 2                ; s address of start of stack
             DS 2                ; t
             DS 2                ; u
             DS 2                ; v
             DS 2                ; w
             DS 2                ; x     
             DS 2                ; y
-vLastDef:   DS 2                ; z name of last defined function
+            DS 2                ; z name of last defined function
 
 vBasePtr:   DS 2
-vPointer:   DS 2                ; 
-vElse:      DS 2                ; 
+vPointer:   DS 2                 
 
 HEAP:         
